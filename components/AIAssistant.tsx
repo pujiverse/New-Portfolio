@@ -71,24 +71,24 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ data }) => {
   return (
     <div className="fixed bottom-6 right-6 z-[60]">
       {isOpen ? (
-        <div className="w-[350px] sm:w-[400px] h-[500px] glass rounded-3xl flex flex-col shadow-2xl border-white/10 overflow-hidden">
-          <div className="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+        <div className="w-[350px] sm:w-[400px] h-[500px] bg-white rounded-3xl flex flex-col shadow-2xl border border-neutral-100 overflow-hidden">
+          <div className="p-4 border-b border-neutral-100 flex justify-between items-center bg-neutral-50/50">
             <div className="flex items-center gap-2">
-              <Bot size={20} className="text-blue-400" />
-              <span className="font-semibold text-sm">Portfolio AI</span>
+              <Bot size={20} className="text-blue-600" />
+              <span className="font-bold text-sm text-neutral-800">Portfolio Assistant</span>
             </div>
-            <button onClick={() => setIsOpen(false)} className="p-1 hover:bg-white/10 rounded-lg transition-colors">
+            <button onClick={() => setIsOpen(false)} className="p-1 hover:bg-neutral-200 rounded-lg transition-colors text-neutral-400">
               <X size={20} />
             </button>
           </div>
           
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] p-3 rounded-2xl text-sm ${
                   m.role === 'user' 
                   ? 'bg-blue-600 text-white rounded-tr-none' 
-                  : 'bg-white/10 text-neutral-200 rounded-tl-none'
+                  : 'bg-neutral-100 text-neutral-700 rounded-tl-none'
                 }`}>
                   {m.text}
                 </div>
@@ -96,25 +96,25 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ data }) => {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-white/10 p-3 rounded-2xl rounded-tl-none animate-pulse">
-                  <div className="h-4 w-12 bg-white/20 rounded"></div>
+                <div className="bg-neutral-100 p-3 rounded-2xl rounded-tl-none animate-pulse">
+                  <div className="h-4 w-12 bg-neutral-200 rounded"></div>
                 </div>
               </div>
             )}
           </div>
 
-          <div className="p-4 border-t border-white/10 flex gap-2">
+          <div className="p-4 border-t border-neutral-100 flex gap-2 bg-neutral-50/30">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Ask about my experience..."
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500/50"
+              className="flex-1 bg-white border border-neutral-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/10"
             />
             <button 
               onClick={handleSend}
-              className="p-2 bg-blue-600 hover:bg-blue-500 rounded-xl transition-colors disabled:opacity-50"
+              className="p-2 bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors disabled:opacity-50 text-white"
               disabled={isLoading}
             >
               <Send size={18} />
@@ -124,7 +124,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ data }) => {
       ) : (
         <button 
           onClick={() => setIsOpen(true)}
-          className="w-14 h-14 bg-blue-600 hover:bg-blue-500 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform cursor-pointer"
+          className="w-14 h-14 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform cursor-pointer text-white"
         >
           <MessageSquare size={24} />
         </button>
