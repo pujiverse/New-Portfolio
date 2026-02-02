@@ -1,0 +1,5 @@
+{
+  "name": "Live-Sync Professional Portfolio",
+  "description": "A high-performance portfolio that automatically synchronizes with a Google Sheet, featuring an AI assistant powered by Gemini to answer questions about your professional journey.",
+  "requestFramePermissions": []
+}
