@@ -26,6 +26,7 @@ const Hero: React.FC<HeroProps> = ({ profile }) => {
               src={imgError ? `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.name}` : profile.avatarUrl} 
               alt={profile.name} 
               onError={() => setImgError(true)}
+              referrerPolicy="no-referrer"
               className="w-full h-full object-cover rounded-full"
             />
           </div>

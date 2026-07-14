@@ -132,6 +132,7 @@ export const getPortfolioData = async (): Promise<PortfolioData> => {
     profile.location = findInColumnA(['location', 'address', 'city']) || findInRow1(['location', 'address', 'city']) || '';
     profile.github = findInColumnA(['github', 'git']) || findInRow1(['github', 'git']) || '';
     profile.linkedin = findInColumnA(['linkedin']) || findInRow1(['linkedin']) || '';
+    profile.portfolio = findInColumnA(['portfolio', 'website', 'site', 'projects page']) || findInRow1(['portfolio', 'website', 'site', 'projects page']) || '';
 
     // Search for image URL anywhere in the first column or specific cells
     const searchForImage = () => {

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Profile } from '../types';
-import { Github, Linkedin } from 'lucide-react';
+import { Github, Linkedin, Globe } from 'lucide-react';
 
 interface NavbarProps {
   profile?: Profile;
@@ -28,7 +28,6 @@ const Navbar: React.FC<NavbarProps> = ({ profile }) => {
           {[
             { name: 'About', id: 'home' },
             { name: 'Experience', id: 'experience' },
-            { name: 'Projects', id: 'projects' },
             { name: 'Skills', id: 'skills' },
             { name: 'Education', id: 'education' },
             { name: 'Contact', id: 'contact' }
@@ -59,6 +58,11 @@ const Navbar: React.FC<NavbarProps> = ({ profile }) => {
               {profile.linkedin && (
                 <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-100/70 hover:text-white transition-colors">
                   <Linkedin size={20} />
+                </a>
+              )}
+              {profile.portfolio && (
+                <a href={profile.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-100/70 hover:text-white transition-colors" title="Projects">
+                  <Globe size={20} />
                 </a>
               )}
             </div>

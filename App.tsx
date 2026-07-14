@@ -5,10 +5,9 @@ import { getPortfolioData } from './services/sheetService';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Experience from './components/Experience';
-import Projects from './components/Projects';
 import Skills from './components/Skills';
 import AIAssistant from './components/AIAssistant';
-import { RefreshCcw, Info } from 'lucide-react';
+import { RefreshCcw, Info, Github, Linkedin, Globe } from 'lucide-react';
 
 const App: React.FC = () => {
   const [data, setData] = useState<PortfolioData | null>(null);
@@ -88,8 +87,6 @@ const App: React.FC = () => {
         
         {data.experience.length > 0 && <Experience experience={data.experience} />}
         
-        {data.projects.length > 0 && <Projects projects={data.projects} />}
-        
         {data.skills.length > 0 && <Skills skills={data.skills} />}
         
         {/* Education Section */}
@@ -157,7 +154,7 @@ const App: React.FC = () => {
           <p className="text-neutral-500 mb-10 text-lg max-w-xl mx-auto font-light">
             Ready to scale your data infrastructure? Feel free to reach out for collaborations.
           </p>
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center gap-8">
             <a 
               href={`mailto:${data.profile.email}`} 
               className="px-12 py-5 bg-blue-600 hover:bg-blue-700 rounded-2xl font-bold transition-all hover:scale-105 active:scale-95 text-white shadow-xl shadow-blue-600/20 relative overflow-hidden group"
@@ -165,6 +162,24 @@ const App: React.FC = () => {
               <span className="relative z-10">Get in Touch</span>
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </a>
+            
+            <div className="flex items-center gap-6">
+              {data.profile.github && (
+                <a href={data.profile.github} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-neutral-900 hover:scale-110 transition-all" title="GitHub">
+                  <Github size={24} />
+                </a>
+              )}
+              {data.profile.linkedin && (
+                <a href={data.profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-blue-600 hover:scale-110 transition-all" title="LinkedIn">
+                  <Linkedin size={24} />
+                </a>
+              )}
+              {data.profile.portfolio && (
+                <a href={data.profile.portfolio} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-green-600 hover:scale-110 transition-all" title="Projects">
+                  <Globe size={24} />
+                </a>
+              )}
+            </div>
           </div>
           <p className="mt-20 text-neutral-400 text-sm font-medium tracking-wide">
             © {new Date().getFullYear()} {data.profile.name}{data.profile.role ? ` • ${data.profile.role.toUpperCase()}` : ''}
