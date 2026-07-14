@@ -37,8 +37,8 @@ const Hero: React.FC<HeroProps> = ({ profile }) => {
         </h1>
         
         {/* Subtext Tagline */}
-        <p className="max-w-3xl mx-auto text-xl md:text-2xl font-medium text-blue-50/90 leading-relaxed italic opacity-90">
-          "Crafting delightful user experiences with modern web technologies."
+        <p className="max-w-3xl mx-auto text-xl md:text-2xl font-medium text-blue-50/90 leading-relaxed opacity-90">
+          {profile.role}{profile.role && profile.location ? ' based in ' : ''}{profile.location}
         </p>
 
         {/* Action Indicator */}

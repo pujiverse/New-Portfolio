@@ -1,7 +1,13 @@
 
 import React from 'react';
+import { Profile } from '../types';
+import { Github, Linkedin } from 'lucide-react';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  profile?: Profile;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ profile }) => {
   const scrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -15,13 +21,14 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="text-xl md:text-2xl font-black text-white tracking-tighter">
           {/* Using Name for Branding */}
-          Pujith Sakhamuri
+          {profile?.name || 'Pujith Sakhamuri'}
         </div>
         
         <nav className="hidden md:flex items-center gap-8">
           {[
             { name: 'About', id: 'home' },
             { name: 'Experience', id: 'experience' },
+            { name: 'Projects', id: 'projects' },
             { name: 'Skills', id: 'skills' },
             { name: 'Education', id: 'education' },
             { name: 'Contact', id: 'contact' }
@@ -41,6 +48,21 @@ const Navbar: React.FC = () => {
               <span className="absolute -bottom-1 left-0 right-full h-0.5 bg-yellow-400 group-hover:right-0 transition-all"></span>
             </a>
           ))}
+          
+          {profile && (
+            <div className="flex items-center gap-4 border-l border-white/20 pl-6 ml-2">
+              {profile.github && (
+                <a href={profile.github} target="_blank" rel="noopener noreferrer" className="text-blue-100/70 hover:text-white transition-colors">
+                  <Github size={20} />
+                </a>
+              )}
+              {profile.linkedin && (
+                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-100/70 hover:text-white transition-colors">
+                  <Linkedin size={20} />
+                </a>
+              )}
+            </div>
+          )}
         </nav>
 
         {/* Mobile Menu Icon (Visual only) */}

@@ -5,6 +5,7 @@ import { getPortfolioData } from './services/sheetService';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Experience from './components/Experience';
+import Projects from './components/Projects';
 import Skills from './components/Skills';
 import AIAssistant from './components/AIAssistant';
 import { RefreshCcw, Info } from 'lucide-react';
@@ -61,7 +62,7 @@ const App: React.FC = () => {
 
   return (
     <div className="relative bg-white min-h-screen selection:bg-blue-600/10 overflow-x-hidden text-neutral-900">
-      <Navbar />
+      <Navbar profile={data.profile} />
       
       <main>
         <Hero profile={data.profile} />
@@ -76,14 +77,18 @@ const App: React.FC = () => {
             <p className="text-xl md:text-2xl text-neutral-600 leading-relaxed font-light mb-8">
               {data.profile.bio}
             </p>
-            <div className="inline-flex items-center gap-3 px-6 py-3 bg-neutral-50 border border-neutral-100 rounded-2xl text-neutral-400 text-sm font-medium">
-              <Info size={16} className="text-blue-500" />
-              <span>Data Engineer based in Cleveland, OH</span>
-            </div>
+            {(data.profile.role || data.profile.location) && (
+              <div className="inline-flex items-center gap-3 px-6 py-3 bg-neutral-50 border border-neutral-100 rounded-2xl text-neutral-400 text-sm font-medium">
+                <Info size={16} className="text-blue-500" />
+                <span>{data.profile.role}{data.profile.role && data.profile.location ? ' based in ' : ''}{data.profile.location}</span>
+              </div>
+            )}
           </div>
         </section>
         
         {data.experience.length > 0 && <Experience experience={data.experience} />}
+        
+        {data.projects.length > 0 && <Projects projects={data.projects} />}
         
         {data.skills.length > 0 && <Skills skills={data.skills} />}
         
@@ -162,7 +167,7 @@ const App: React.FC = () => {
             </a>
           </div>
           <p className="mt-20 text-neutral-400 text-sm font-medium tracking-wide">
-            © {new Date().getFullYear()} {data.profile.name} • DATA ENGINEER
+            © {new Date().getFullYear()} {data.profile.name}{data.profile.role ? ` • ${data.profile.role.toUpperCase()}` : ''}
           </p>
         </footer>
       </main>

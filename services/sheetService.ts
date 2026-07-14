@@ -89,37 +89,31 @@ export const getPortfolioData = async (): Promise<PortfolioData> => {
 
   // Default Profile
   let profile: Profile = {
-    name: 'Pujith Sakhamuri',
-    role: 'Data Engineer',
-    bio: '6+ years of experience in Data Engineering, ML/AI, building scalable data pipelines, NLP, Computer Vision, Generative AI, and MLOps solutions.',
-    email: 'sakhamuripujith@gmail.com',
-    location: 'Cleveland, OH',
+    name: '',
+    role: '',
+    bio: '',
+    email: '',
+    location: '',
     github: '',
-    linkedin: 'https://www.linkedin.com/in/pujith-s-284a4219b/',
-    avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=Pujith`
+    linkedin: '',
+    avatarUrl: ''
   };
 
   if (profileRows.length > 0) {
-    if (profileRows.length >= 4 && profileRows[3] && profileRows[3][0]) {
-      const a4Value = profileRows[3][0].trim();
-      if (a4Value.toLowerCase().startsWith('http')) {
-        profile.avatarUrl = transformImageLink(a4Value);
-      }
-    }
-
-    const findInColumnA = (keys: string[]) => {
-      for (const row of profileRows) {
-        const key = row[0]?.toLowerCase().trim();
-        if (keys.includes(key) && row[1]) return row[1];
+    const headers = profileRows[0].map(h => h.toLowerCase().trim());
+    
+    const findInRow1 = (keys: string[]) => {
+      for (const k of keys) {
+        const idx = headers.indexOf(k);
+        if (idx !== -1 && profileRows[1] && profileRows[1][idx]) return profileRows[1][idx].trim();
       }
       return null;
     };
 
-    const headers = profileRows[0].map(h => h.toLowerCase().trim());
-    const findInRow1 = (keys: string[]) => {
-      for (const k of keys) {
-        const idx = headers.indexOf(k);
-        if (idx !== -1 && profileRows[1] && profileRows[1][idx]) return profileRows[1][idx];
+    const findInColumnA = (keys: string[]) => {
+      for (const row of profileRows) {
+        const key = row[0]?.toLowerCase().trim();
+        if (keys.includes(key) && row[1]) return row[1].trim();
       }
       return null;
     };
@@ -131,32 +125,47 @@ export const getPortfolioData = async (): Promise<PortfolioData> => {
       return findInColumnA(['name']) || findInRow1(['name']);
     };
 
-    const fetchedName = getName();
-    if (fetchedName) profile.name = fetchedName;
-    
-    profile.role = findInColumnA(['current role', 'role', 'occupation']) || findInRow1(['current role', 'role', 'occupation']) || profile.role;
-    profile.bio = findInColumnA(['summary', 'bio', 'description', 'about']) || findInRow1(['summary', 'bio', 'description', 'about']) || profile.bio;
-    profile.email = findInColumnA(['email', 'email address']) || findInRow1(['email', 'email address']) || profile.email;
-    profile.location = findInColumnA(['location', 'address', 'city']) || findInRow1(['location', 'address', 'city']) || profile.location;
-    profile.github = findInColumnA(['github', 'git']) || findInRow1(['github', 'git']) || profile.github;
-    profile.linkedin = findInColumnA(['linkedin']) || findInRow1(['linkedin']) || profile.linkedin;
+    profile.name = getName() || 'Portfolio';
+    profile.role = findInColumnA(['current role', 'role', 'occupation']) || findInRow1(['current role', 'role', 'occupation']) || '';
+    profile.bio = findInColumnA(['summary', 'bio', 'description', 'about']) || findInRow1(['summary', 'bio', 'description', 'about']) || '';
+    profile.email = findInColumnA(['email', 'email address']) || findInRow1(['email', 'email address']) || '';
+    profile.location = findInColumnA(['location', 'address', 'city']) || findInRow1(['location', 'address', 'city']) || '';
+    profile.github = findInColumnA(['github', 'git']) || findInRow1(['github', 'git']) || '';
+    profile.linkedin = findInColumnA(['linkedin']) || findInRow1(['linkedin']) || '';
 
-    const secondaryAvatar = findInColumnA(['photo', 'avatar', 'portfolio', 'image', 'picture']) || findInRow1(['photo', 'avatar', 'portfolio', 'image', 'picture']);
-    if (secondaryAvatar && secondaryAvatar.toLowerCase().startsWith('http')) {
-      profile.avatarUrl = transformImageLink(secondaryAvatar);
-    }
-    
-    if (!profile.avatarUrl || profile.avatarUrl.includes('dicebear')) {
-      for (const row of profileRows) {
-        for (const cell of row) {
-          if (typeof cell === 'string' && (cell.toLowerCase().includes('drive.google.com') || cell.toLowerCase().includes('docs.google.com/uc')) && cell.toLowerCase().includes('http')) {
-            profile.avatarUrl = transformImageLink(cell);
-            break;
+    // Search for image URL anywhere in the first column or specific cells
+    const searchForImage = () => {
+      // Check column A values in case they put the URL there
+      for (let i = 0; i < profileRows.length; i++) {
+        if (profileRows[i] && profileRows[i][0]) {
+          const val = profileRows[i][0].trim();
+          if (val.toLowerCase().startsWith('http')) {
+            return transformImageLink(val);
           }
         }
-        if (profile.avatarUrl && !profile.avatarUrl.includes('dicebear')) break;
       }
-    }
+      
+      // Look for keys like 'image url', 'photo'
+      const imgVal = findInColumnA(['photo', 'avatar', 'portfolio', 'image', 'picture', 'image url']) || findInRow1(['photo', 'avatar', 'portfolio', 'image', 'picture', 'image url']);
+      if (imgVal && imgVal.toLowerCase().startsWith('http')) {
+        return transformImageLink(imgVal);
+      }
+      
+      // Check all cells just in case
+      for (const row of profileRows) {
+        for (const cell of row) {
+          if (typeof cell === 'string') {
+            const val = cell.trim();
+            if ((val.toLowerCase().includes('drive.google.com') || val.toLowerCase().includes('docs.google.com/uc')) && val.toLowerCase().startsWith('http')) {
+              return transformImageLink(val);
+            }
+          }
+        }
+      }
+      return `https://api.dicebear.com/7.x/initials/svg?seed=${profile.name}`;
+    };
+    
+    profile.avatarUrl = searchForImage();
   }
 
   const experience: Experience[] = expRows.slice(1).map(row => ({
